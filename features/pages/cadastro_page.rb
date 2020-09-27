@@ -20,15 +20,20 @@ class CadastroPage < SitePrism::Page
     element :register_btn, '#submitAccount'
 
     def iniciar_criacao_conta(email)
+        # Variavel com @ é de instância ao termina a execução ela deixa de existir
+        # Variável @@ é uma variável de classe e fica no ciclo de vida da classe e do step
+        # Variável com $ é de escopo glogal é acessível de qualquer lugar
+        puts @email = email.eql?('aleatório') ? Faker::Internet.email(domain: 'guts') : email
         email_create_account_field.set email
         create_account_btn.click
     end
 
     def preencher_form_com_dados_fixos
-        # Marcando o radio button
         title_fem_rd.set true
-        first_name_field.set 'Eshilane'
-        last_name_field.set 'Cruz'
+        @@first_name = 'Eshilane'
+        first_name_field.set @@first_name
+        @@last_name = 'Cruz'
+        last_name_field.set @@last_name
         password_field.set '12345'
         day_select.select '18'
         month_select.select 'September'
@@ -44,7 +49,35 @@ class CadastroPage < SitePrism::Page
         address_alias_field.set 'Casa'
     end
 
+    def preencher_form_com_dados_aleatorios
+        title_fem_rd.set true
+        @@first_name = Faker::Name.first_name
+        first_name_field.set @@first_name
+        @@last_name = Faker::Name.last_name
+        last_name_field.set @@last_name
+        password_field.set Faker::Internet.password(min_length: 5, max_length: 10, mix_case: true, special_characters: true)
+        day_select.select '18'
+        month_select.select 'September'
+        year_select.select '1990'
+        newsletter_checkbox.click
+        address_field.set 'Rua A, 15'
+        city_field.set 'Porto Alegre'
+        state_select.click
+        option = state_options.find {|option| option.text.include?("Iowa")}
+        option.click
+        zip_code_field.set '56789'
+        # e164 codigo do pais além de ddd
+        mobile_phone_field.set Faker::PhoneNumber.cell_phone_in_e164
+        address_alias_field.set 'Casa'
+    end
+
     def confirmar_cadastro
         register_btn.click
+    end
+
+    def account_full_name
+        # Por isso no método preencher_form_com_dados_aleatorios ficou declarado como @@
+        # criada a variável assim como criado no screenshot
+        "#{@@first_name} #{@@last_name}"
     end
 end

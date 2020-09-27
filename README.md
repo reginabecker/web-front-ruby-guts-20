@@ -15,3 +15,12 @@ git push -u origin master
 
 Abrir o cmd
 webdriver-manager start
+
+Criar uma nova branch a partir desta
+# Trocar para uma nova branch
+git checkout -b cadastro_dados_faker
+
+Acrescentar a gem faker
+Ir no gemfile e acrescentar
+# Instalar a gem: 
+bundle install
