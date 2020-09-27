@@ -24,10 +24,17 @@ class CadastroPage < SitePrism::Page
         # Variavel com @ é de instância ao termina a execução ela deixa de existir
         # Variável @@ é uma variável de classe e fica no ciclo de vida da classe e do step
         # Variável com $ é de escopo glogal é acessível de qualquer lugar
-        puts @email = email.eql?('aleatório') ? Faker::Internet.email(domain: 'guts') : email
-        email_create_account_field.set email
-        create_account_btn.click
-    end
+            case email
+            when 'aleatório'
+                @email = Faker::Internet.email(domain: 'guts')
+            when 'padrão'
+                @email = UserData.get('email')
+            else
+                @email = email
+            end
+            email_create_account_field.set @email
+            create_account_btn.click
+        end
 
     def preencher_form_com_dados_fixos
         title_fem_rd.set true
@@ -95,6 +102,29 @@ class CadastroPage < SitePrism::Page
         zip_code_field.set zipcode
         mobile_phone_field.set phone
         address_alias_field.set address_name
+    end
+
+    def preencher_form_com_dados_datafile
+        UserData.get('gender').eql?('fem') ? title_fem_rd.set(true) : title_masc_rd.set(true)
+        @@first_name = UserData.get('first_name')
+        first_name_field.set @@first_name
+        @@last_name = UserData.get('last_name')
+        last_name_field.set @@last_name
+        password_field.set UserData.get('password')
+        day_select.select UserData.get('day')
+        month_select.select UserData.get('month')
+        year_select.select UserData.get('year')
+        unless UserData.get('newsletter').eql?('no') 
+            newsletter_checkbox.click
+        end
+        address_field.set UserData.get('address')
+        city_field.set UserData.get('city')
+        state_select.click
+        option = state_options.find {|option| option.text.include?(UserData.get('state'))}
+        option.click
+        zip_code_field.set UserData.get('zipcode')
+        mobile_phone_field.set UserData.get('phone')
+        address_alias_field.set UserData.get('address_name')
     end
 
     def confirmar_cadastro

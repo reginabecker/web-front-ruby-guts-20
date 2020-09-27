@@ -31,3 +31,7 @@ git push -u origin cadastro_dados_faker
 Criar uma nova branch a partir desta
 # Trocar para uma nova branch
 git checkout -b cadastro_exemplos
+
+Criar uma nova branch a partir desta
+# Trocar para uma nova branch
+git checkout -b cadastro_datafile
