@@ -24,3 +24,10 @@ Acrescentar a gem faker
 Ir no gemfile e acrescentar
 # Instalar a gem: 
 bundle install
+
+
+git push -u origin cadastro_dados_faker
+
+Criar uma nova branch a partir desta
+# Trocar para uma nova branch
+git checkout -b cadastro_exemplos
